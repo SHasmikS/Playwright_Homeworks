@@ -71,7 +71,7 @@ test('Successful sign in', async ({ page }) => {
 
 
   //Special characters in email
-  test.only('Special characters in email', async ({ page }) => {
+  test('Special characters in email', async ({ page }) => {
   const email = process.env.LOGIN_EMAIL!;
   const password = process.env.LOGIN_PASSWORD!;
   const emailChar = email.replace("testingart", "testingart()" );
