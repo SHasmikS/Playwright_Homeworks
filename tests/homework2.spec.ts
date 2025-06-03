@@ -96,5 +96,4 @@ test('Successful sign in', async ({ page }) => {
 
   test.afterAll('Teardown', async () => {
   console.log('Done with tests');
-  // ...
 });
