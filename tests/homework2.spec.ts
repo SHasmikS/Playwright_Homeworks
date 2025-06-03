@@ -93,3 +93,8 @@ test('Successful sign in', async ({ page }) => {
   await expect(page.getByText("Logout")).toBeVisible();
   await page.getByText("Logout").click();
   });
+
+  test.afterAll('Teardown', async () => {
+  console.log('Done with tests');
+  // ...
+});
