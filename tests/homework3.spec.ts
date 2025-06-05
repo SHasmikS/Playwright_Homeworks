@@ -19,17 +19,10 @@ test('Compare the product1', async ({ page }) => {
 
   const productCard = page.locator('.block_inner.product-item-details')
     .filter({ hasText: 'Samsung WW80AGAS21AXLP' });
-
   await expect(productCard).toBeVisible();
-
-  // Use getByRole or getByText if visible text is enough
   const nameFromCard = await productCard.getByRole('link', { name: 'Samsung WW80AGAS21AXLP' }).first().innerText();
-
   await productCard.click();
-
-  // Wait for navigation to the product detail page
   await page.waitForLoadState('domcontentloaded');
-
   const nameOnDetailPage = page.locator('[data-dynamic="name"]');
   await expect(nameOnDetailPage).toContainText(nameFromCard);
 });
