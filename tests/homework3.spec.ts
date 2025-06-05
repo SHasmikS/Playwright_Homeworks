@@ -11,7 +11,7 @@ test('Find the product', async ({ page }) => {
   });
 
 
-test('Compare the product1', async ({ page }) => {
+test('Compare the product', async ({ page }) => {
   await page.goto('https://www.zigzag.am/en/', { waitUntil: 'load' });
   await page.locator('#search').fill('Samsung washing machine');
   await page.locator('#search').press('Enter');
