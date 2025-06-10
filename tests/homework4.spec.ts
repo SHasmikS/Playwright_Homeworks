@@ -26,7 +26,6 @@ test("Compare the product price", async ({ page }) => {
 });
 
 test("Add item to the cart", async ({ page }) => {
-  await page.goto("https://www.zigzag.am/en/");
 
   const search = page.locator("#search");
   await search.fill("Samsung washing machine");
