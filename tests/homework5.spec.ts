@@ -219,7 +219,7 @@ test("Sort by price", async ({ page }) => {
  const count = await priceLocator.count();
 let arr: number[] = [];
 
-// Adding elements in the array
+// Adding elements to an array
 for (let i = 0; i < count; i++) {
   const singlePrice = priceLocator.nth(i);
   const priceText = await singlePrice.textContent();
