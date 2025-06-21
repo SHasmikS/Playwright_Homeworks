@@ -132,9 +132,7 @@ test("Item checkout", async ({ page }) => {
   });
   await provinceField.click();
 
-  const provinceYerevan = addressForm.locator(
-    ".dropdown-menu.inner.show li >> text=Երևան"
-  );
+  const provinceYerevan = addressForm.locator('.dropdown-menu.inner.show').locator('li').filter({ hasText: 'Երևան' });
   await provinceYerevan.click();
 
   const selectedProvince = addressForm.locator(".filter-option-inner-inner", {
@@ -142,9 +140,7 @@ test("Item checkout", async ({ page }) => {
   });
   await expect.soft(selectedProvince).toBeVisible();
 
-  const cityField = addressForm.locator(
-    ".dropdown-menu.inner.show li >> text=Երևան"
-  );
+  const cityField = addressForm.locatorpage.locator('.dropdown-menu.inner.show').locator('li').filter({ hasText: 'Երևան' });
   expect.soft(cityField).toBeVisible;
 
   const addressField = addressForm.locator('input[name="street[0]"]');
@@ -167,9 +163,7 @@ test("Item checkout", async ({ page }) => {
     hasText: "Ամիս",
   });
   await birthMonthField.click();
-  const septemberOption = page
-    .locator('.dropdown-menu.show li >> text="9"')
-    .nth(1);
+  const septemberOption = page.locator('.dropdown-menu.show').locator('li').filter({ hasText: '9' }).nth(1);
   await expect(septemberOption).toBeVisible();
   await septemberOption.click();
 
@@ -193,4 +187,44 @@ test("Item checkout", async ({ page }) => {
   expect(paymentOption).toBeChecked;
 
   //await page.locator('.checkout_submit').first().click();
+});
+
+
+
+test("Sort by price", async ({ page }) => {
+  await page.goto('https://zigzag.am');
+  
+ // Fill and submit search 
+  const search = page.locator("#search");
+  await search.fill("AirPods");
+  await search.press("Enter");
+  
+  // Wait for the search results
+  const searchResultTitle = page.getByText('Search results for " AirPods"', { exact: true });
+  expect(searchResultTitle).toBeVisible;
+
+  // Sort the page
+  const sortingItems = page.locator('.filter-option-inner-inner', { hasText: 'Դասավորել ըստ' });
+  await sortingItems.click();
+  const sortingDropdown = page.locator('.dropdown-menu.show').locator('text=Գնի աճման');
+  await sortingDropdown.click();
+  
+  //Take all the current prices
+  const priceLocator = page.locator('span.price');
+
+  //Wait for the first element to be visible
+  await expect(priceLocator.first()).toBeVisible();
+
+  //Elements count
+ const count = await priceLocator.count();
+let arr: number[] = [];
+
+// Adding elements in the array
+for (let i = 0; i < count; i++) {
+  const singlePrice = priceLocator.nth(i);
+  const priceText = await singlePrice.textContent();
+  const numericPrice = parseFloat(priceText!.replace(/[^\d.,]/g, '').replace(',', '.'));
+  arr.push(numericPrice);
+}
+console.log(arr)
 });
