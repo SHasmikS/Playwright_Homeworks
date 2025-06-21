@@ -140,7 +140,7 @@ test("Item checkout", async ({ page }) => {
   });
   await expect.soft(selectedProvince).toBeVisible();
 
-  const cityField = addressForm.locatorpage.locator('.dropdown-menu.inner.show').locator('li').filter({ hasText: 'Երևան' });
+  const cityField = addressForm.locator('.dropdown-menu.inner.show').locator('li').filter({ hasText: 'Երևան' });
   expect.soft(cityField).toBeVisible;
 
   const addressField = addressForm.locator('input[name="street[0]"]');
