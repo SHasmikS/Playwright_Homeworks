@@ -45,36 +45,122 @@ expect.soft(cartProductPrice).toBe(productPrice);
 
 await page.getByRole('button', { name: 'Close' }).click();
 
-//(8)  Անցնել ուրիշ "ըստ ցանկության" tab
 await page.getByRole('link', { name: 'Խոհանոցային տեխնիկա' }).click();
 
 // (9) Ընտրել որևէ ապրանք, վերագրել փոփոխականի ապրանքի անունը
-const product2 = page.locator('.product_name.combo_link', { hasText: 'Teka HSB 630 BLACK' });
-  await expect(product2).toBeVisible();
-  const productName2 = product2.innerText();
-  await product2.hover();
+const productBlock2 = page.locator('.product-item-details', { hasText: 'Teka HSB 630 BLACK' });
+await expect(productBlock2).toBeVisible();
+await productBlock2.hover();
 
-  // (10) Վերագրել փոփոխականներին ապրանքի գինը
-  const priceLocator2 = page.locator('#product-price-44963 .price');
-    const productPrice2 = await priceLocator2.innerText();
+const productName2 = await productBlock2.locator('a.product_name.combo_link').innerText();
 
+// (10) Վերագրել փոփոխականներին ապրանքի գինը
+const priceLocator2 = productBlock2.locator('[id^="product-price"] .price');
+const productPrice2 = await priceLocator2.innerText();
 
 // (11) Ավելացնել զամբյուղում
-const addToCartButton2 = product2.getByRole('button', { name: 'Ավելացնել' });
-  await expect(addToCartButton2).toBeVisible();
-  await addToCartButton2.click();
+const addToCartButton2 = productBlock2.locator('button', { hasText: 'Ավելացնել' });
+await expect(addToCartButton2).toBeVisible();
+await addToCartButton2.click();
 
-  //(12) Ստուգել զամբյուղում ապրանքի անունը և գումարը (Soft Assertion)
-const cartProductNameElement2 = basketModal.locator('.product-item-name a');
- const cartProductName2 = await cartProductNameElement2.innerText();
- const cartProductPriceElement2 = basketModal.locator('.price-excluding-tax .price');
+// (12) Ստուգել զամբյուղում ապրանքի անունը և գումարը (Soft Assertion)
+
+const cartProductNameElement2 = basketModal.locator('.product-item-name a', { hasText: 'Teka HSB 630 BLACK' });
+const cartProductName2 = await cartProductNameElement2.innerText();
+
+const cartProductPriceElement2 = basketModal.locator('.price-excluding-tax .price').first();
 const cartProductPrice2 = await cartProductPriceElement2.innerText();
 
 expect.soft(cartProductName2).toBe(productName2);
 expect.soft(cartProductPrice2).toBe(productPrice2);
 
+//(13) Ստուգել զամբյուղում 2 ապրանքների ընդհանուր գումարը
+const numProductPrice = parseInt(cartProductPrice.replace(/[^\d]/g, ""));
+const numProductPrice2 = parseInt(cartProductPrice2.replace(/[^\d]/g, ""));
+const totalProductPrice = numProductPrice+numProductPrice2
+const cartTotalPrice = await basketModal
+  .locator('.totals')
+  .filter({ hasText: 'Ընդհանուր' }) 
+  .locator('.price')
+  .innerText();
+
+  const numCartTotalPrice = parseInt(cartTotalPrice.replace(/[^\d]/g, ""));
+
+expect.soft(numCartTotalPrice).toBe(totalProductPrice);
 
 
+//(14) Կատարել "Պատվիրել" գործողությունը
+await page.locator('#top-cart-btn-checkout').click();
+
+const orderSummaryTitle = page.getByText('Պատվերի ամփոփում', { exact: true });
+expect.soft(orderSummaryTitle).toBeVisible
+
+//(15) Լրացնել առաքման հասցեի բոլոր դաշտերը
+const emailField = page.locator('#customer-email').first()
+await expect.soft(emailField).toBeVisible();
+await emailField.fill('test@yopmail.com');
+
+const addressForm = page.locator('#shipping-new-address-form');
+expect.soft(addressForm.locator('#ctype_1')).toBeChecked;
+
+const firstNameField = addressForm.locator('input[name="firstname"]');
+expect.soft(firstNameField).toBeVisible;
+await firstNameField.fill('Hasmik');
+    
+const lastNameField = addressForm.locator('input[name="lastname"]');
+expect.soft(lastNameField).toBeVisible;
+await lastNameField.fill('Sukiasyan');
+
+const countryField = addressForm.locator('.filter-option-inner-inner', { hasText: 'Հայաստան' });
+await expect.soft(countryField).toBeVisible();
+
+const provinceField = addressForm.locator('.filter-option-inner-inner', {hasText: 'Խնդրում ենք ընտրել մարզ'});
+await provinceField.click();
+
+const provinceYerevan = addressForm.locator('.dropdown-menu.inner.show li >> text=Երևան');
+await provinceYerevan.click();
+
+const selectedProvince = addressForm.locator('.filter-option-inner-inner', { hasText: 'Երևան' });
+await expect.soft(selectedProvince).toBeVisible();
+
+const cityField = addressForm.locator('.dropdown-menu.inner.show li >> text=Երևան');
+expect.soft(cityField).toBeVisible;
+
+const addressField = addressForm.locator('input[name="street[0]"]');
+await addressField.fill('Բաշինջաղյան');
+expect.soft(addressField).toBeVisible;
+
+const telephoneField = addressForm.locator('#telephone_fake');
+expect(telephoneField).toBeVisible;
+await telephoneField.fill('441203655');
+
+const birthDayField = addressForm.locator('.filter-option-inner-inner', {hasText: 'Օր'});
+await birthDayField.click();
+const dayOption = page.locator('.dropdown-menu.show li', { hasText: '12' });
+expect(dayOption).toBeVisible();
+await dayOption.click();
+
+
+const birthMonthField = addressForm.locator('.filter-option-inner-inner', { hasText: 'Ամիս' });
+await birthMonthField.click();
+const septemberOption = page.locator('.dropdown-menu.show li >> text="9"').nth(1);
+await expect(septemberOption).toBeVisible();
+await septemberOption.click();
+
+const birthYearField = addressForm.locator('.filter-option-inner-inner', { hasText: 'տարի' });
+await birthYearField.click();
+const yearOption = page.locator('.dropdown-menu.show li', { hasText: '1992' });
+await expect(yearOption).toBeVisible();
+await yearOption.click();
+
+const deliveryOption = page.locator('#label_method_matrixrate_215711_matrixrate')
+await deliveryOption.check();
+await expect.soft(deliveryOption).toBeChecked();
+
+const paymentOption = page.locator('#cashondelivery');
+expect(paymentOption).toBeChecked;
+
+//await page.locator('.checkout_submit').first().click();
 
 });
 
