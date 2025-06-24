@@ -17,7 +17,6 @@ test("Item checkout", async ({ page }) => {
     hasText: "Cecotec 05355 Ready Warm 9790",
   });
   await expect(product).toBeVisible();
-  await product.hover();
   const productElement = product.locator("a.product_name.combo_link");
   const productName = await productElement.first().innerText();
 
@@ -26,6 +25,7 @@ test("Item checkout", async ({ page }) => {
   const productPrice = await priceLocator.innerText();
 
   //(5) Ավելացնել զամբյուղում
+  await product.hover();
   const addToCartButton = product.locator("button", { hasText: "Ավելացնել" });
   await expect(addToCartButton).toBeVisible();
   await addToCartButton.click();
@@ -47,6 +47,7 @@ test("Item checkout", async ({ page }) => {
 
   await page.getByRole("button", { name: "Close" }).click();
 
+ // (8) Անցնել այլ թաբ
   await page.getByRole("link", { name: "Խոհանոցային տեխնիկա" }).click();
 
   // (9) Ընտրել որևէ ապրանք, վերագրել փոփոխականի ապրանքի անունը
