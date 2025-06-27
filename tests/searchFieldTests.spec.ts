@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { HomePage } from "../POM/homePage/homepagePOM";
-import { SearchResultsPage } from "../POM/SearchResultsPage";
+import { SearchResultsPage } from "../POM/SearchResultsPage/SearchResultsPage";
 
 test("Search with valid keyword", async ({ page }) => {
   const homePage = new HomePage(page);
