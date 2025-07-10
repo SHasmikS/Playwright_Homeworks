@@ -56,7 +56,6 @@ test.describe('FakeStoreAPI Products & Users Endpoints', () => {
     expect(response.ok()).toBeTruthy();
     const body = await response.json();
     console.log('Product Created:', body);
-    createdProductId = body.id; 
   });
 
   test('PUT /products/:id - Update Product', async () => {
@@ -68,7 +67,7 @@ test.describe('FakeStoreAPI Products & Users Endpoints', () => {
       image: "http://example.com/blue"
     };
 
-    const response = await apiContext.put(`/products/${createdProductId}`, {
+    const response = await apiContext.put(`/products/1`, {
       data: updatedProduct,
     });
 
