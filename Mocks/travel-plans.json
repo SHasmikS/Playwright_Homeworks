@@ -1,0 +1,16 @@
+[
+  {
+    "planName": "Standard Travel",
+    "price": 120,
+    "currency": "USD",
+    "coverage": "Basic",
+    "duration": "10 days"
+  },
+  {
+    "planName": "Premium Travel",
+    "price": 200,
+    "currency": "USD",
+    "coverage": "Extended",
+    "duration": "15 days"
+  }
+]
