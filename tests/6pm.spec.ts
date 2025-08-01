@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { homePage } from '../POM/homePage/homePagePOM';
 import { SearchResultsPage } from '../POM/searchResults/searchResultsPOM';
+import { ProductPage } from '../POM/productPage/productPagePom';
 
 test.describe('Home Page Navigation', () => {
   test.beforeEach(async ({ page }) => {
@@ -10,6 +11,7 @@ test.describe('Home Page Navigation', () => {
   test('User can search for an item and view results', async ({ page }) => {
     const homepage = new homePage(page);
     const searchResultsPage = new SearchResultsPage(page);
+     const productPage = new ProductPage(page);
 
     const searchKeyword = 'crocs kids';
     await homepage.doSearch(searchKeyword);
