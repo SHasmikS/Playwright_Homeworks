@@ -31,7 +31,7 @@ test.describe('Home Page Navigation', () => {
 
   });
 
-  test('Search and complete checkout flow', async ({ page }) => {
+  test('User can search for an item and cart the item', async ({ page }) => {
   const homepage = new homePage(page);
   const searchResultsPage = new SearchResultsPage(page);
   const productPage = new ProductPage(page);
