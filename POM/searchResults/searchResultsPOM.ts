@@ -10,7 +10,7 @@ export class SearchResultsPage {
   readonly sortSelect: Locator;
   readonly productCard: Locator;
   readonly invalidItemHeader: Locator;
-
+  
   constructor(page: Page) {
     this.page = page;
     this.pageHeader = page.locator(searchResults.pageHeader);
@@ -18,7 +18,8 @@ export class SearchResultsPage {
     this.sortByLabel = page.locator(searchResults.sortBy);
     this.sortSelect = page.locator(searchResults.sortSelect);
     this.productCard = page.locator(searchResults.productCard);
-    this.invalidItemHeader = page.locator(searchResults.invalidItemHeader)
+    this.invalidItemHeader = page.locator(searchResults.invalidItemHeader);
+  
   }
 
   async getPageHeaderText() {

@@ -11,7 +11,7 @@ test.describe('Home Page Navigation', () => {
   test('User can search for an item and view results', async ({ page }) => {
     const homepage = new homePage(page);
     const searchResultsPage = new SearchResultsPage(page);
-     const productPage = new ProductPage(page);
+    const productPage = new ProductPage(page);
 
     const searchKeyword = 'crocs kids';
     await homepage.doSearch(searchKeyword);
@@ -21,7 +21,7 @@ test.describe('Home Page Navigation', () => {
 
 
   test ('No results message appears for invalid searches', async ({page}) =>{
-     const homepage = new homePage(page);
+    const homepage = new homePage(page);
     const searchResultsPage = new SearchResultsPage(page);
 
     const searchKeyword = 'hsjkhjjkh';
@@ -30,4 +30,20 @@ test.describe('Home Page Navigation', () => {
     expect(headerText).toContain('Hmmm, we couldn’t find anything for');
 
   });
+
+  test('Search and complete checkout flow', async ({ page }) => {
+  const homepage = new homePage(page);
+  const searchResultsPage = new SearchResultsPage(page);
+  const productPage = new ProductPage(page);
+
+  await homepage.doSearch('crocs kids');
+  await searchResultsPage.clickProductCard();
+
+  await productPage.selectSize('11');
+  await productPage.clickAddToCart();
+  await productPage.waitForCartModal();
+  await productPage.proceedToCheckout();
+
+ 
+});
 });
